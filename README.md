@@ -1,73 +1,67 @@
-# React + TypeScript + Vite
+# Personal Portfolio — Juan Sebastian Arias Rueda
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio site for Juan Sebastian Arias Rueda — Systems Engineering student
+wiring web, infrastructure, algorithms, networking, and business into working products.
 
-Currently, two official plugins are available:
+Built as a static single-page site with a **cyanotype blueprint** design language: a
+drafting-grid background, monospace schematic annotations, and a signature node-network
+"systems map" in the hero.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
 
-## React Compiler
+- **React 19** + **TypeScript**
+- **Vite** (static build)
+- **Tailwind CSS v3**
+- **Framer Motion** (reduced-motion-aware) + CSS animations
+- Self-hosted fonts via `@fontsource`: Bricolage Grotesque, Hanken Grotesk, IBM Plex Mono
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Develop
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # type-check + production build → dist/
+npm run preview  # serve the production build locally
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Project structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+  data/         # content (profile, projects, skills, experience, education)
+  components/   # Nav, Hero, NodeGraph, Projects, Skills, Experience, Education, Contact, Footer
+  hooks/        # useReveal (scroll-reveal via IntersectionObserver)
+  index.css     # design tokens, blueprint background, reduced-motion rules
+public/
+  _redirects    # SPA fallback for Cloudflare Pages
+  resume.pdf    # CV (replace with the real file)
+  favicon.svg
+```
+
+## Deploy — Cloudflare Pages
+
+This is a static build, deployable directly to Cloudflare Pages.
+
+**Dashboard:** connect the GitHub repo and use:
+
+| Setting              | Value           |
+| -------------------- | --------------- |
+| Framework preset     | Vite            |
+| Build command        | `npm run build` |
+| Build output directory | `dist`        |
+
+`public/_redirects` (`/* /index.html 200`) provides the single-page-app fallback so
+deep links resolve to `index.html`.
+
+**Or via Wrangler:**
+
+```bash
+npm run build
+npx wrangler pages deploy dist
+```
+
+## Updating content
+
+All copy lives in `src/data/*.ts` — edit those files to change projects, skills,
+experience, or contact details. Replace `public/resume.pdf` with the real CV (the
+"Download CV" buttons link to `/resume.pdf`).
