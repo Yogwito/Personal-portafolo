@@ -1,11 +1,19 @@
-import { profile } from './data/profile';
+import Nav from './components/Nav';
+import Hero from './components/Hero';
 
 export default function App() {
   return (
-    <div className="relative z-10 mx-auto flex min-h-screen max-w-board flex-col items-center justify-center px-6 text-center">
-      <p className="mono-label mb-4">{profile.role}</p>
-      <h1 className="font-display text-5xl text-text">{profile.name}</h1>
-      <p className="mt-4 max-w-xl text-muted">{profile.tagline}</p>
-    </div>
+    <>
+      <a
+        href="#main"
+        className="sr-only z-50 rounded-sm bg-accent px-4 py-2 font-mono text-sm text-ink focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+      >
+        Skip to content
+      </a>
+      <Nav />
+      <main id="main" className="relative z-10">
+        <Hero />
+      </main>
+    </>
   );
 }

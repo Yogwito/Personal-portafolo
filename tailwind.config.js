@@ -31,7 +31,7 @@ export default {
       },
       keyframes: {
         'draw-edge': {
-          from: { strokeDashoffset: 'var(--edge-len, 600)' },
+          from: { strokeDashoffset: '1' },
           to: { strokeDashoffset: '0' },
         },
         'node-pop': {
