@@ -1,0 +1,150 @@
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/hanken-grotesk';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/ibm-plex-mono/600.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* ── Light cyanotype blueprint palette ─────────────────────── */
+  --bp-base: #0e3a5c; /* blueprint blue ground */
+  --bp-deep: #0a2c47; /* deeper blue for gradient + footer */
+  --bp-surface: rgba(255, 255, 255, 0.05); /* translucent drafting card */
+  --bp-line: rgba(173, 209, 235, 0.1); /* hairline grid */
+  --bp-trace: rgba(220, 236, 248, 0.55); /* idle connector trace */
+  --accent: #7fe3d9; /* active trace / node glow */
+  --accent-amber: #f5b14c; /* schematic annotations */
+  --text: #eaf2f9; /* primary pale text */
+  --muted: #a9c2d6; /* secondary text */
+  --ink: #0b2238; /* dark text on white chips */
+  --paper: #f4f8fb; /* white chip / button ground */
+
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--bp-base);
+    background-image:
+      /* drafting grid */
+      linear-gradient(var(--bp-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bp-line) 1px, transparent 1px),
+      /* finer sub-grid */
+      linear-gradient(rgba(173, 209, 235, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(173, 209, 235, 0.045) 1px, transparent 1px),
+      /* ground gradient */
+      radial-gradient(120% 90% at 80% -10%, #16496f 0%, var(--bp-base) 45%, var(--bp-deep) 100%);
+    background-size:
+      96px 96px,
+      96px 96px,
+      24px 24px,
+      24px 24px,
+      100% 100%;
+    color: var(--text);
+    font-family: 'Hanken Grotesk Variable', ui-sans-serif, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* paper grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: 'Bricolage Grotesque Variable', ui-sans-serif, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--ink);
+  }
+
+  /* visible keyboard focus on everything interactive */
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* drafting registration ticks on card corners */
+  .blueprint-card {
+    position: relative;
+    background: var(--bp-surface);
+    border: 1px solid rgba(220, 236, 248, 0.16);
+    backdrop-filter: blur(2px);
+  }
+  .blueprint-card::before,
+  .blueprint-card::after {
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-color: var(--bp-trace);
+    border-style: solid;
+    opacity: 0.6;
+  }
+  .blueprint-card::before {
+    top: 7px;
+    left: 7px;
+    border-width: 1px 0 0 1px;
+  }
+  .blueprint-card::after {
+    bottom: 7px;
+    right: 7px;
+    border-width: 0 1px 1px 0;
+  }
+
+  .mono-label {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+}
+
+/* ── respect prefers-reduced-motion globally ─────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
